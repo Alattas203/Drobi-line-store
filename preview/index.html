@@ -56,55 +56,69 @@ svg.i-sm{width:16px;height:16px}
 .pay-tabby{background:#3BFFC1;color:#0b2a22}
 .pay-tamara{background:linear-gradient(90deg,#F7B267,#F4845F);color:#2a1406}
 
-/* ---------- top utility bar ---------- */
-.topbar{background:var(--bar);border-top:4px solid var(--ink)}
-.tb-row{display:flex;align-items:center;gap:16px;height:52px}
-.lang{display:inline-flex;align-items:center;gap:8px;background:var(--field);border-radius:999px;padding:6px 16px;font-size:14px;font-weight:700;flex:none;border:0}
-.lang .sep{width:1px;height:14px;background:var(--dim)}
-.tb-search{flex:1;position:relative}
-.tb-search input{width:100%;height:36px;border-radius:999px;border:0;background:var(--field);padding:0 42px 0 16px;outline:none;font-size:14px}
-.tb-search input::placeholder{color:var(--dim)}
-.tb-search input:focus{box-shadow:0 0 0 2px var(--brand)}
-.tb-search svg{position:absolute;right:14px;top:9px;color:var(--dim)}
-.tb-contact{display:flex;align-items:center;gap:16px;font-size:14px;color:var(--ink-2);flex:none}
-.tb-contact .sep{width:1px;height:18px;background:var(--line-2)}
-
-/* ---------- main header ---------- */
+/* ---------- header: nav · centered logo · actions, search row below ---------- */
 .header{background:var(--white);position:sticky;top:env(safe-area-inset-top,0px);z-index:40;border-bottom:1px solid var(--line)}
-.h-row{display:flex;align-items:center;gap:40px;height:84px}
+.h-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;min-height:80px}
+.h-start{display:flex;align-items:center;justify-content:flex-start;min-width:0}
+.h-end{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-width:0}
 .logo{display:flex;align-items:center;gap:10px;flex:none}
-.logo-mark{width:46px;height:46px;color:var(--brand)}
+.h-row > .logo{justify-self:center}
+.logo-mark{width:44px;height:44px;color:var(--brand)}
 .logo-txt{display:flex;flex-direction:column;line-height:1.15}
 .logo-txt b{color:var(--brand);font-size:16px;font-weight:800}
-.logo-txt span{color:var(--brand);font-size:12.5px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:.2px}
-.nav{display:flex;align-items:center;gap:6px}
-.nav-item{position:relative}
-.nav-link{display:flex;align-items:center;gap:6px;padding:10px 12px;background:none;border:0;font-size:15px;font-weight:700;color:var(--ink)}
-.nav-link .chev{color:var(--muted);transition:transform .2s}
+.logo-txt span{color:var(--brand);font-size:12px;font-weight:700;font-family:Arial,sans-serif;letter-spacing:.2px}
+.nav{display:flex;align-items:center;gap:2px}
+.nav-item{position:relative;z-index:5}
+.nav-link{display:flex;align-items:center;gap:4px;height:40px;padding:0 12px;border-radius:8px;background:none;border:0;font-size:14.5px;font-weight:700;color:var(--ink);white-space:nowrap;transition:background .15s}
+.nav-link:hover,.nav-item.open .nav-link{background:var(--bar)}
+.nav-link .chev{width:14px;height:14px;color:var(--muted);transition:transform .2s}
 .nav-item.open .chev{transform:rotate(180deg)}
-.nav-link:hover{color:var(--brand)}
 .nav-link.sale{color:var(--red)}
-.mega{position:absolute;top:calc(100% + 18px);right:0;width:520px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 48px -16px rgba(16,24,40,.22);padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:4px;opacity:0;visibility:hidden;transform:translateY(-4px);transition:.18s}
+.mega{position:absolute;top:calc(100% + 10px);right:0;width:480px;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 40px -16px rgba(16,24,40,.22);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;opacity:0;visibility:hidden;transform:translateY(-4px);transition:.18s}
 .nav-item.open .mega{opacity:1;visibility:visible;transform:none}
-.mega::before{content:"";position:absolute;top:-20px;left:0;right:0;height:20px}
-.mega a{display:flex;gap:12px;align-items:flex-start;padding:10px;border-radius:10px}
-.mega a:hover{background:var(--bar)}
-.mega .mi{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);flex:none}
-.mega b{display:block;font-size:14px}
-.mega span{font-size:12.5px;color:var(--muted);line-height:1.55}
-.mega-foot{grid-column:1/-1;margin-top:6px;padding:10px 12px;border-radius:10px;background:var(--bar);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.h-actions{margin-inline-start:auto;display:flex;align-items:center;gap:10px}
-.cart-count{position:absolute;top:-6px;left:-4px;min-width:20px;height:20px;border-radius:999px;background:var(--red-2);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 5px;border:2px solid var(--white);transition:transform .25s}
+.mega::before{content:"";position:absolute;top:-12px;left:0;right:0;height:12px}
+.mega-intro{display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.mega-intro .mt{font-size:16px;font-weight:800;margin:0}
+.mega-intro .md{font-size:13px;color:var(--muted);margin:4px 0 0;line-height:1.65}
+.mega-links{display:flex;flex-direction:column;justify-content:flex-end}
+.mega-links a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;font-size:14px}
+.mega-links a:hover{background:var(--bar)}
+.mega-links svg{color:var(--muted)}
+.btn-sm{padding:8px 14px;font-size:13px}
+.btn-ghost{background:none;color:var(--ink)}
+.btn-ghost:hover{background:var(--bar)}
+.vsep{width:1px;height:28px;background:var(--line)}
+.cart-btn{position:relative}
+.cart-btn .cart-total{opacity:.8;font-weight:700}
+.cart-count{position:absolute;top:-8px;left:-8px;min-width:20px;height:20px;border-radius:999px;background:var(--red-2);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 5px;border:2px solid var(--white);transition:transform .25s}
 .cart-count.bump{transform:scale(1.3)}
-.cart-total{font-weight:800;font-size:15px}
+.h-search-row{padding-block:0 14px}
+.h-search{position:relative;display:block;max-width:640px;margin-inline:auto}
+.h-search input{width:100%;height:44px;border-radius:999px;border:1px solid var(--line);background:var(--bar);padding:0 46px 0 18px;outline:none;font-size:14.5px;transition:.2s}
+.h-search input::placeholder{color:var(--dim)}
+.h-search input:focus{background:var(--white);border-color:var(--brand);box-shadow:0 0 0 3px rgba(29,78,158,.12)}
+.h-search > svg{position:absolute;right:16px;top:12px;color:var(--dim);pointer-events:none}
 .menu-btn{display:none}
-.mobile-nav{display:none;border-top:1px solid var(--line);padding-block:8px 14px}
-.mobile-nav.open{display:block}
-.mobile-nav details{border-bottom:1px solid var(--line)}
-.mobile-nav summary{padding:12px 2px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
-.mobile-nav summary::-webkit-details-marker{display:none}
-.mobile-nav a{display:block;padding:8px 12px;color:var(--ink-2);font-size:14px}
-.mobile-nav > a{padding:12px 2px;font-weight:700;border-bottom:1px solid var(--line)}
+.mobile-nav{display:none;border-top:1px solid var(--line);padding-block:18px 22px}
+.mobile-nav.open{display:flex;flex-direction:column;gap:22px;max-height:calc(100vh - 150px);overflow-y:auto}
+.m-group .mt{font-size:17px;font-weight:800;margin:0 0 4px}
+.m-group a{display:flex;justify-content:space-between;align-items:center;padding:7px 0;color:var(--ink-2);font-size:14.5px}
+.m-group a svg{color:var(--dim)}
+.m-group a.sale{color:var(--red);font-weight:800;font-size:17px}
+.m-contact{font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.m-actions{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:1180px){.hide-md{display:none}}
+@media (max-width:1023px){
+  .h-row{min-height:68px}
+  .acc-btn{display:none}
+}
+@media (max-width:560px){
+  .logo-mark{width:36px;height:36px}
+  .logo-txt span{font-size:11px}
+  .cart-btn .lbl,.cart-btn .cart-total{display:none}
+  .cart-btn{padding:10px 12px}
+  .h-search input{height:42px}
+}
 
 /* ---------- hero ---------- */
 .hero{position:relative;height:clamp(340px,40vw,528px);overflow:hidden;background:#0D1522;display:grid;place-items:center;text-align:center;color:#fff}
@@ -297,19 +311,14 @@ footer .logo-txt b,footer .logo-txt span,footer .logo-mark{color:#fff}
   .t-item:nth-child(n+3){border-top:1px solid var(--line)}
 }
 @media (max-width:880px){
-  .tb-contact{display:none}
   .feature,.svc-grid,.branch{grid-template-columns:1fr}
   .grid-p{grid-template-columns:repeat(2,1fr);gap:14px}
   .f-grid{grid-template-columns:1fr 1fr}
   .f-stage{min-height:320px}.f-stage svg{height:260px}
-  .cart-total{display:none}
 }
 @media (max-width:560px){
   .wrap{padding-inline:16px}
-  .h-row{height:70px;gap:12px}
-  .logo-mark{width:38px;height:38px}
   .logo-txt b{font-size:14px}
-  .lang .t{display:none}
   .trust-row{grid-template-columns:1fr}
   .t-item + .t-item{border-inline-start:0;border-top:1px solid var(--line)}
   .p-body{padding:10px}
@@ -334,6 +343,7 @@ footer .logo-txt b,footer .logo-txt span,footer .logo-mark{color:#fff}
     <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M6.2 18.8a7 7 0 0 1 11.6 0"/></symbol>
     <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.4 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.1 3 5.5l7 7z"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M6 8 2 12l4 4"/><path d="M2 12h20"/></symbol>
     <symbol id="i-truck" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.520 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
     <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></symbol>
@@ -365,75 +375,44 @@ footer .logo-txt b,footer .logo-txt span,footer .logo-mark{color:#fff}
   </defs>
 </svg>
 
-<!-- ============ TOP UTILITY BAR ============ -->
-<div class="topbar">
-  <div class="wrap tb-row">
-    <button class="lang" type="button" aria-label="اللغة والعملة"><span class="t">العربية</span><span class="sep"></span><svg class="riyal"><use href="#i-riyal"/></svg></button>
-    <label class="tb-search" for="q">
-      <span class="sr">ابحث</span>
-      <input id="q" type="search" placeholder="ابحث" autocomplete="off">
-      <svg class="i i-sm"><use href="#i-search"/></svg>
-    </label>
-    <div class="tb-contact">
-      <span>تواصل معنا: <span class="num" dir="ltr">055 260 5370</span></span>
-      <span class="sep"></span>
-      <span>شارع فلسطين، الشرفية – جدة</span>
-    </div>
-  </div>
-</div>
-
-<!-- ============ MAIN HEADER ============ -->
+<!-- ============ HEADER: nav · centered logo · actions, search row below ============ -->
 <header class="header" id="top">
   <div class="wrap">
     <div class="h-row">
+      <div class="h-start">
+        <button class="circle menu-btn" id="menuBtn" aria-label="القائمة" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg></button>
+        <nav class="nav" aria-label="الأقسام">
+          <div class="nav-item" data-menu><button class="nav-link" aria-expanded="false">جوالات <svg class="i chev"><use href="#i-chev"/></svg></button><div class="mega"><div class="mega-intro"><div><p class="mt">جوالات</p><p class="md">أحدث الأجهزة بضمان سنتين، وتقسيط على 4 دفعات بدون فوائد.</p></div><a class="btn btn-dark btn-sm" href="https://wa.me/966552605370" target="_blank" rel="noopener">اطلب عبر الواتساب</a></div><div class="mega-links"><a href="#products" data-go="iphone"><span>Apple iPhone</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="samsung"><span>Samsung Galaxy</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="all" data-q="Honor"><span>Honor</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="all" data-q="Xiaomi"><span>Xiaomi</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="used"><span>مستعمل مضمون</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div></div></div>
+          <div class="nav-item" data-menu><button class="nav-link" aria-expanded="false">إكسسوارات <svg class="i chev"><use href="#i-chev"/></svg></button><div class="mega"><div class="mega-intro"><div><p class="mt">إكسسوارات</p><p class="md">شواحن وسماعات وحماية أصلية، وتركيب الحماية مجاني من الفرع.</p></div><a class="btn btn-dark btn-sm" href="https://wa.me/966552605370" target="_blank" rel="noopener">اسأل عن منتج</a></div><div class="mega-links"><a href="#products" data-go="acc" data-q="Anker"><span>Anker</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="acc" data-q="Green Lion"><span>Green Lion</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="acc" data-q="MagSafe"><span>MagSafe</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="acc" data-q="حماية"><span>حماية الشاشة</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div></div></div>
+          <div class="nav-item" data-menu><button class="nav-link" aria-expanded="false">صيانة واستبدال <svg class="i chev"><use href="#i-chev"/></svg></button><div class="mega"><div class="mega-intro"><div><p class="mt">صيانة واستبدال</p><p class="md">فنيين معتمدين وقطع أصلية في فرعنا بالشرفية.</p></div><a class="btn btn-dark btn-sm" href="https://wa.me/966552605370" target="_blank" rel="noopener">احجز موعد صيانة</a></div><div class="mega-links"><a href="#services"><span>حاسبة الصيانة</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#services"><span>استبدل جهازك</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#branch"><span>موقع الفرع</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div></div></div>
+          <a href="#products" class="nav-link sale" data-go="sale">تخفيضات</a>
+        </nav>
+      </div>
       <a href="#top" class="logo" aria-label="دروبي لاين للاتصالات">
         <svg class="logo-mark"><use href="#logo"/></svg>
         <span class="logo-txt"><b>دروبي لاين للاتصالات</b><span>Drobi Line Telecom</span></span>
       </a>
-      <nav class="nav" aria-label="الأقسام">
-        <div class="nav-item" data-menu>
-          <button class="nav-link" aria-expanded="false">جوالات <svg class="i i-sm chev"><use href="#i-chev"/></svg></button>
-          <div class="mega">
-            <a href="#products" data-go="iphone"><span class="mi"><svg class="i"><use href="#i-phone"/></svg></span><div><b>Apple iPhone</b><span>آيفون 17 برو و 16 برو</span></div></a>
-            <a href="#products" data-go="samsung"><span class="mi"><svg class="i"><use href="#i-phone"/></svg></span><div><b>Samsung Galaxy</b><span>سلسلة S و Z Flip و A</span></div></a>
-            <a href="#products" data-go="all" data-q="Honor"><span class="mi"><svg class="i"><use href="#i-phone"/></svg></span><div><b>Honor</b><span>Magic و 400 Pro</span></div></a>
-            <a href="#products" data-go="all" data-q="Xiaomi"><span class="mi"><svg class="i"><use href="#i-phone"/></svg></span><div><b>Xiaomi</b><span>Redmi Note و Xiaomi 15</span></div></a>
-            <div class="mega-foot"><span>قسّطها على 4 دفعات بدون فوائد</span><span><span class="pay-chip pay-tabby">tabby</span> <span class="pay-chip pay-tamara">tamara</span></span></div>
-          </div>
-        </div>
-        <div class="nav-item" data-menu>
-          <button class="nav-link" aria-expanded="false">إكسسوارات <svg class="i i-sm chev"><use href="#i-chev"/></svg></button>
-          <div class="mega">
-            <a href="#products" data-go="acc" data-q="Anker"><span class="mi"><svg class="i"><use href="#i-plug"/></svg></span><div><b>Anker</b><span>شواحن وباور بانك</span></div></a>
-            <a href="#products" data-go="acc" data-q="Green Lion"><span class="mi"><svg class="i"><use href="#i-battery"/></svg></span><div><b>Green Lion</b><span>سماعات وكيابل</span></div></a>
-            <a href="#products" data-go="acc" data-q="MagSafe"><span class="mi"><svg class="i"><use href="#i-magnet"/></svg></span><div><b>MagSafe</b><span>كفرات وشواحن مغناطيسية</span></div></a>
-            <a href="#products" data-go="acc" data-q="حماية"><span class="mi"><svg class="i"><use href="#i-layers"/></svg></span><div><b>حماية الشاشة</b><span>زجاج 9H وتركيب مجاني</span></div></a>
-          </div>
-        </div>
-        <div class="nav-item" data-menu>
-          <button class="nav-link" aria-expanded="false">صيانة واستبدال <svg class="i i-sm chev"><use href="#i-chev"/></svg></button>
-          <div class="mega" style="width:440px">
-            <a href="#services"><span class="mi"><svg class="i"><use href="#i-wrench"/></svg></span><div><b>حاسبة الصيانة</b><span>سعر فوري للشاشة والبطارية</span></div></a>
-            <a href="#services"><span class="mi"><svg class="i"><use href="#i-swap"/></svg></span><div><b>استبدل جهازك</b><span>قيّم جهازك القديم</span></div></a>
-            <a href="#branch"><span class="mi"><svg class="i"><use href="#i-pin"/></svg></span><div><b>فرع الشرفية</b><span>شارع فلسطين، جدة</span></div></a>
-          </div>
-        </div>
-        <a href="#products" class="nav-link" data-go="used">مستعمل مضمون</a>
-        <a href="#products" class="nav-link sale" data-go="sale">تخفيضات</a>
-      </nav>
-      <div class="h-actions">
-        <button class="circle" aria-label="حسابي"><svg class="i"><use href="#i-user"/></svg></button>
-        <button class="circle" id="cartBtn" aria-label="السلة"><svg class="i"><use href="#i-bag"/></svg><span class="cart-count num" id="cartCount">0</span></button>
-        <span class="cart-total num" id="cartTotal"></span>
-        <button class="circle menu-btn" id="menuBtn" aria-label="القائمة" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg></button>
+      <div class="h-end">
+        <a class="btn btn-ghost hide-md" href="https://wa.me/966552605370" target="_blank" rel="noopener"><svg class="i i-sm"><use href="#i-wa"/></svg>تواصل معنا</a>
+        <span class="vsep hide-md"></span>
+        <button class="btn btn-line acc-btn"><svg class="i i-sm"><use href="#i-user"/></svg>حسابي</button>
+        <button class="btn btn-dark cart-btn" id="cartBtn" aria-label="السلة"><svg class="i i-sm"><use href="#i-bag"/></svg><span class="lbl">السلة</span><span class="cart-total num" id="cartTotal"></span><span class="cart-count num" id="cartCount">0</span></button>
       </div>
     </div>
+    <div class="h-search-row">
+      <label class="h-search" for="q">
+        <span class="sr">ابحث في المتجر</span>
+        <input id="q" type="search" placeholder="ابحث عن جوال، إكسسوار، أو موديل…" autocomplete="off">
+        <svg class="i"><use href="#i-search"/></svg>
+      </label>
+    </div>
     <div class="mobile-nav" id="mobileNav">
-      <details><summary>جوالات <svg class="i i-sm"><use href="#i-chev"/></svg></summary><a href="#products" data-go="iphone">Apple iPhone</a><a href="#products" data-go="samsung">Samsung Galaxy</a><a href="#products" data-go="all" data-q="Honor">Honor</a><a href="#products" data-go="all" data-q="Xiaomi">Xiaomi</a></details>
-      <details><summary>إكسسوارات <svg class="i i-sm"><use href="#i-chev"/></svg></summary><a href="#products" data-go="acc" data-q="Anker">Anker</a><a href="#products" data-go="acc" data-q="Green Lion">Green Lion</a><a href="#products" data-go="acc" data-q="MagSafe">MagSafe</a><a href="#products" data-go="acc" data-q="حماية">حماية الشاشة</a></details>
-      <details><summary>صيانة واستبدال <svg class="i i-sm"><use href="#i-chev"/></svg></summary><a href="#services">حاسبة الصيانة</a><a href="#services">استبدل جهازك</a><a href="#branch">موقع الفرع</a></details>
-      <a href="#products" data-go="used">مستعمل مضمون</a>
-      <a href="#products" data-go="sale" style="color:var(--red)">تخفيضات</a>
+      <div class="m-group"><p class="mt">جوالات</p><a href="#products" data-go="iphone"><span>Apple iPhone</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="samsung"><span>Samsung Galaxy</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="all" data-q="Honor"><span>Honor</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="all" data-q="Xiaomi"><span>Xiaomi</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="used"><span>مستعمل مضمون</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div>
+      <div class="m-group"><p class="mt">إكسسوارات</p><a href="#products" data-go="acc" data-q="Anker"><span>Anker</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="acc" data-q="Green Lion"><span>Green Lion</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="acc" data-q="MagSafe"><span>MagSafe</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#products" data-go="acc" data-q="حماية"><span>حماية الشاشة</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div>
+      <div class="m-group"><p class="mt">صيانة واستبدال</p><a href="#services"><span>حاسبة الصيانة</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#services"><span>استبدل جهازك</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a><a href="#branch"><span>موقع الفرع</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div>
+      <div class="m-group"><a href="#products" class="sale" data-go="sale"><span>تخفيضات</span><svg class="i i-sm"><use href="#i-arrow"/></svg></a></div>
+      <div class="m-actions"><button class="btn btn-line"><svg class="i i-sm"><use href="#i-user"/></svg>حسابي</button><a class="btn btn-wa" href="https://wa.me/966552605370" target="_blank" rel="noopener"><svg class="i i-sm"><use href="#i-wa"/></svg>تواصل معنا</a></div>
+      <div class="m-contact">تواصل معنا: <span class="num" dir="ltr">055 260 5370</span> · شارع فلسطين، الشرفية – جدة</div>
     </div>
   </div>
 </header>
@@ -713,10 +692,13 @@ footer .logo-txt b,footer .logo-txt span,footer .logo-mark{color:#fff}
     btn.addEventListener("click",()=>open(!item.classList.contains("open")));
   });
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){$$("[data-menu]").forEach(i=>i.classList.remove("open")); closeCart();}});
-  $("#menuBtn").addEventListener("click",e=>{const m=$("#mobileNav"); m.classList.toggle("open"); e.currentTarget.setAttribute("aria-expanded",m.classList.contains("open"));});
+  const setMenu=v=>{const m=$("#mobileNav"),b=$("#menuBtn"); m.classList.toggle("open",v); b.setAttribute("aria-expanded",v); b.innerHTML=`<svg class="i"><use href="#i-${v?"x":"menu"}"/></svg>`;};
+  $("#menuBtn").addEventListener("click",()=>setMenu(!$("#mobileNav").classList.contains("open")));
+  $("#mobileNav").addEventListener("click",e=>{ if(e.target.closest("a")) setMenu(false); });
+  $$(".mega a").forEach(a=>a.addEventListener("click",()=>$$("[data-menu]").forEach(i=>i.classList.remove("open"))));
   $$("[data-go]").forEach(a=>a.addEventListener("click",()=>{
     filter=a.dataset.go; query=a.dataset.q||""; $("#q").value=query;
-    $$("[data-menu]").forEach(i=>i.classList.remove("open")); $("#mobileNav").classList.remove("open");
+    $$("[data-menu]").forEach(i=>i.classList.remove("open"));
     renderFilters(); renderProducts();
   }));
 
