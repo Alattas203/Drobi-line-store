@@ -94,7 +94,8 @@ const navigationItems: NavItem[] = [
       title: "iPhone 17 Pro Max",
       subtitle: "256GB · Cosmic Orange",
       price: 5299,
-      image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&q=80",
+      image:
+        "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&q=80",
       href: "/product/iphone-17-pro-max",
     },
   },
@@ -132,7 +133,8 @@ const navigationItems: NavItem[] = [
       subtitle: "3 منافذ · شحن سريع",
       price: 189,
       wasPrice: 249,
-      image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&q=80",
+      image:
+        "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&q=80",
       href: "/product/anker-prime-65w",
     },
   },
@@ -180,18 +182,55 @@ const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
 
 function Logo({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" aria-label="دروبي لاين للاتصالات" className="flex shrink-0 items-center gap-2.5 text-[#1D4E9E]">
-      <svg viewBox="0 0 48 48" className={cn("h-9 w-9", !compact && "lg:h-10 lg:w-10")} aria-hidden="true">
-        <path d="M6 8h16a16 16 0 0 1 0 32H6z" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinejoin="round" />
-        <path d="M13 16h8a8 8 0 0 1 0 16h-8z" fill="currentColor" opacity=".18" />
-        <path d="M13 16v16" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <path d="M34 6a14 14 0 0 1 8 8M36 12a6 6 0 0 1 2.5 3" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" fill="none" />
-        <path d="M42 40H28" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" />
+    <Link
+      href="/"
+      aria-label="دروبي لاين للاتصالات"
+      className="flex shrink-0 items-center gap-2.5 text-[#1D4E9E]"
+    >
+      <svg
+        viewBox="0 0 48 48"
+        className={cn("h-9 w-9", !compact && "lg:h-10 lg:w-10")}
+        aria-hidden="true"
+      >
+        <path
+          d="M6 8h16a16 16 0 0 1 0 32H6z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3.4"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M13 16h8a8 8 0 0 1 0 16h-8z"
+          fill="currentColor"
+          opacity=".18"
+        />
+        <path
+          d="M13 16v16"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <path
+          d="M34 6a14 14 0 0 1 8 8M36 12a6 6 0 0 1 2.5 3"
+          stroke="currentColor"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M42 40H28"
+          stroke="currentColor"
+          strokeWidth="3.4"
+          strokeLinecap="round"
+        />
       </svg>
       <span className="flex flex-col leading-tight">
         <span className="text-base font-extrabold lg:text-lg">دروبي لاين</span>
         {!compact && (
-          <span className="font-sans text-[10.5px] font-bold lg:text-[11.5px]" dir="ltr">
+          <span
+            className="font-sans text-[10.5px] font-bold lg:text-[11.5px]"
+            dir="ltr"
+          >
             Drobi Line Telecom
           </span>
         )}
@@ -203,7 +242,16 @@ function Logo({ compact = false }: { compact?: boolean }) {
 /** Saudi Riyal sign, drawn as an icon until the official SVG is dropped in. */
 function RiyalSign({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={cn("inline-block h-[0.85em] w-[0.85em]", className)} fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-label="ريال">
+    <svg
+      viewBox="0 0 24 24"
+      className={cn("inline-block h-[0.85em] w-[0.85em]", className)}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-label="ريال"
+    >
       <path d="M9.2 2.8V17.2c0 1.2-1.2 2-4.4 2.6" />
       <path d="M14.6 4.6v11.8" />
       <path d="M3.8 10.9 20.2 7.4" />
@@ -215,7 +263,9 @@ function RiyalSign({ className }: { className?: string }) {
 
 function Price({ value, className }: { value: number; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1 tabular-nums", className)}>
+    <span
+      className={cn("inline-flex items-center gap-1 tabular-nums", className)}
+    >
       {fmt(value)}
       <RiyalSign />
     </span>
@@ -243,7 +293,10 @@ function IconButton({
       aria-label={badge ? `${label} (${badge})` : label}
       title={label}
       onClick={onClick}
-      className={cn("relative grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted", className)}
+      className={cn(
+        "relative grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-muted",
+        className,
+      )}
     >
       {children}
       {!!badge && (
@@ -275,12 +328,22 @@ function PromoCard({ promo }: { promo: Promo }) {
         onError={(e) => (e.currentTarget.style.visibility = "hidden")}
       />
       <div className="flex flex-col items-start gap-1">
-        <span className="rounded-sm bg-red-800 px-2 py-0.5 text-[11.5px] font-bold text-white">{promo.tag}</span>
-        <p className="mt-1 text-[15px] font-extrabold leading-snug">{promo.title}</p>
-        {promo.subtitle && <p className="text-[13px] text-muted-foreground">{promo.subtitle}</p>}
+        <span className="rounded-sm bg-red-800 px-2 py-0.5 text-[11.5px] font-bold text-white">
+          {promo.tag}
+        </span>
+        <p className="mt-1 text-[15px] font-extrabold leading-snug">
+          {promo.title}
+        </p>
+        {promo.subtitle && (
+          <p className="text-[13px] text-muted-foreground">{promo.subtitle}</p>
+        )}
         <p className="flex items-baseline gap-2 text-[17px] font-extrabold">
           <Price value={promo.price} />
-          {promo.wasPrice && <s className="text-[13px] font-normal text-muted-foreground">{fmt(promo.wasPrice)}</s>}
+          {promo.wasPrice && (
+            <s className="text-[13px] font-normal text-muted-foreground">
+              {fmt(promo.wasPrice)}
+            </s>
+          )}
         </p>
         <p className="text-[11.5px] text-muted-foreground tabular-nums">
           أو {fmt(promo.price / 4)} × 4 مع تابي وتمارا
@@ -298,9 +361,16 @@ function MegaPanel({ item }: { item: MegaItem | BrandsItem }) {
 
   if (item.kind === "brands") {
     return (
-      <div className={cn(inner, "grid grid-cols-1 gap-5 lg:grid-cols-[260px_1fr] lg:gap-8")}>
+      <div
+        className={cn(
+          inner,
+          "grid grid-cols-1 gap-5 lg:grid-cols-[260px_1fr] lg:gap-8",
+        )}
+      >
         <div>
-          <p className="mb-2.5 text-[12.5px] font-extrabold text-muted-foreground">الماركات</p>
+          <p className="mb-2.5 text-[12.5px] font-extrabold text-muted-foreground">
+            الماركات
+          </p>
           <p className="text-[13.5px] leading-relaxed text-muted-foreground">
             وكلاء معتمدين وضمان سنتين على كل الأجهزة الجديدة.
           </p>
@@ -323,15 +393,28 @@ function MegaPanel({ item }: { item: MegaItem | BrandsItem }) {
   }
 
   return (
-    <div className={cn(inner, "grid grid-cols-2 gap-x-4 gap-y-5 lg:grid-cols-[repeat(2,minmax(0,1fr))_320px] lg:gap-8 xl:grid-cols-[repeat(3,minmax(0,1fr))_340px]")}>
+    <div
+      className={cn(
+        inner,
+        "grid grid-cols-2 gap-x-4 gap-y-5 lg:grid-cols-[repeat(2,minmax(0,1fr))_320px] lg:gap-8 xl:grid-cols-[repeat(3,minmax(0,1fr))_340px]",
+      )}
+    >
       {item.columns.map((col) => (
-        <div key={col.heading} className={cn(col.optional && "lg:hidden xl:block")}>
-          <p className="mb-2.5 text-[12.5px] font-extrabold text-muted-foreground">{col.heading}</p>
+        <div
+          key={col.heading}
+          className={cn(col.optional && "lg:hidden xl:block")}
+        >
+          <p className="mb-2.5 text-[12.5px] font-extrabold text-muted-foreground">
+            {col.heading}
+          </p>
           <ul className="flex flex-col">
             {col.links.map((l) => (
               <li key={l.title}>
                 <NavigationMenuLink asChild>
-                  <Link href={l.href} className="block py-1.5 text-[14.5px] transition-colors hover:text-[#1D4E9E]">
+                  <Link
+                    href={l.href}
+                    className="block py-1.5 text-[14.5px] transition-colors hover:text-[#1D4E9E]"
+                  >
                     {l.title}
                   </Link>
                 </NavigationMenuLink>
@@ -343,7 +426,9 @@ function MegaPanel({ item }: { item: MegaItem | BrandsItem }) {
 
       {item.rates && (
         <div className="col-span-2 lg:col-span-1 xl:col-span-2">
-          <p className="mb-2.5 text-[12.5px] font-extrabold text-muted-foreground">أسعار شائعة</p>
+          <p className="mb-2.5 text-[12.5px] font-extrabold text-muted-foreground">
+            أسعار شائعة
+          </p>
           <table className="w-full text-sm">
             <tbody>
               {item.rates.map((r) => (
@@ -358,7 +443,10 @@ function MegaPanel({ item }: { item: MegaItem | BrandsItem }) {
             </tbody>
           </table>
           <NavigationMenuLink asChild>
-            <Link href="/#services" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-extrabold">
+            <Link
+              href="/#services"
+              className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-extrabold"
+            >
               احسب سعر جهازك <MoveLeft className="h-4 w-4" />
             </Link>
           </NavigationMenuLink>
@@ -373,7 +461,11 @@ function MegaPanel({ item }: { item: MegaItem | BrandsItem }) {
           <p className="text-[13px] leading-relaxed opacity-75">
             فنيين معتمدين وقطع أصلية في فرع الشرفية، وضمان 6 أشهر على الإصلاح.
           </p>
-          <Button size="sm" className="mt-2 bg-[#25D366] text-[#063B1A] hover:bg-[#25D366]/90" asChild>
+          <Button
+            size="sm"
+            className="mt-2 bg-[#25D366] text-[#063B1A] hover:bg-[#25D366]/90"
+            asChild
+          >
             <a href={BOOK_REPAIR_URL} target="_blank" rel="noopener noreferrer">
               <MessageCircle className="h-4 w-4" />
               احجز عبر الواتساب
@@ -402,7 +494,13 @@ export interface HeaderProps {
   onSearch?: (query: string) => void;
 }
 
-function Header1({ cartCount = 0, favCount = 0, onCartClick, onFavClick, onSearch }: HeaderProps) {
+function Header1({
+  cartCount = 0,
+  favCount = 0,
+  onCartClick,
+  onFavClick,
+  onSearch,
+}: HeaderProps) {
   const [query, setQuery] = useState("");
 
   const submitSearch = (e: FormEvent<HTMLFormElement>) => {
@@ -414,82 +512,105 @@ function Header1({ cartCount = 0, favCount = 0, onCartClick, onFavClick, onSearc
   };
 
   return (
-      <header dir="rtl" className="sticky top-0 z-40 w-full border-b bg-background">
-        {/* Row 1 — logo · search · icons (mobile: menu · logo · icons / search) */}
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-2.5 py-2.5 [grid-template-areas:'logo_icons'_'search_search'] sm:min-h-[68px] sm:grid-cols-[1fr_minmax(0,440px)_1fr] sm:gap-x-4 sm:py-0 sm:[grid-template-areas:'logo_search_icons'] lg:min-h-[76px] lg:grid-cols-[1fr_minmax(0,560px)_1fr] lg:gap-x-8">
+    <header
+      dir="rtl"
+      className="sticky top-0 z-40 w-full border-b bg-background"
+    >
+      {/* Row 1 — logo · search · icons (mobile: menu · logo · icons / search) */}
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-2.5 py-2.5 [grid-template-areas:'logo_icons'_'search_search'] sm:min-h-[68px] sm:grid-cols-[1fr_minmax(0,440px)_1fr] sm:gap-x-4 sm:py-0 sm:[grid-template-areas:'logo_search_icons'] lg:min-h-[76px] lg:grid-cols-[1fr_minmax(0,560px)_1fr] lg:gap-x-8">
+          <div className="justify-self-start [grid-area:logo]">
+            <Logo />
+          </div>
 
-            <div className="justify-self-start [grid-area:logo]">
-              <Logo />
-            </div>
+          <form
+            role="search"
+            onSubmit={submitSearch}
+            className="w-full justify-self-center [grid-area:search]"
+          >
+            <label className="relative block">
+              <span className="sr-only">ابحث في المتجر</span>
+              <Search className="pointer-events-none absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  onSearch?.(e.target.value);
+                }}
+                placeholder="ابحث عن آيفون، سامسونج، شاحن…"
+                className="h-11 w-full rounded-full border border-transparent bg-[#F1F2F4] pe-4 ps-12 text-[14.5px] outline-none transition placeholder:text-[#8A909C] focus:border-foreground focus:bg-background focus:ring-4 focus:ring-foreground/5"
+              />
+            </label>
+          </form>
 
-            <form role="search" onSubmit={submitSearch} className="w-full justify-self-center [grid-area:search]">
-              <label className="relative block">
-                <span className="sr-only">ابحث في المتجر</span>
-                <Search className="pointer-events-none absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="search"
-                  value={query}
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                    onSearch?.(e.target.value);
-                  }}
-                  placeholder="ابحث عن آيفون، سامسونج، شاحن…"
-                  className="h-11 w-full rounded-full border border-transparent bg-[#F1F2F4] pe-4 ps-12 text-[14.5px] outline-none transition placeholder:text-[#8A909C] focus:border-foreground focus:bg-background focus:ring-4 focus:ring-foreground/5"
-                />
-              </label>
-            </form>
-
-            <div className="flex items-center gap-0.5 justify-self-end [grid-area:icons]">
-              <Link href="/account" aria-label="حسابي" title="حسابي" className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted">
-                <UserRound className="h-[21px] w-[21px]" />
-              </Link>
-              <IconButton
-                label="المفضلة"
-                badge={favCount}
-                badgeTone="red"
-                onClick={onFavClick ?? (() => (window.location.href = "/favorites"))}
-              >
-                <Heart className="h-[21px] w-[21px]" />
-              </IconButton>
-              <IconButton label="السلة" badge={cartCount} onClick={onCartClick}>
-                <ShoppingBag className="h-[21px] w-[21px]" />
-              </IconButton>
-            </div>
+          <div className="flex items-center gap-0.5 justify-self-end [grid-area:icons]">
+            <Link
+              href="/account"
+              aria-label="حسابي"
+              title="حسابي"
+              className="grid h-10 w-10 place-items-center rounded-full hover:bg-muted"
+            >
+              <UserRound className="h-[21px] w-[21px]" />
+            </Link>
+            <IconButton
+              label="المفضلة"
+              badge={favCount}
+              badgeTone="red"
+              onClick={
+                onFavClick ?? (() => (window.location.href = "/favorites"))
+              }
+            >
+              <Heart className="h-[21px] w-[21px]" />
+            </IconButton>
+            <IconButton label="السلة" badge={cartCount} onClick={onCartClick}>
+              <ShoppingBag className="h-[21px] w-[21px]" />
+            </IconButton>
           </div>
         </div>
+      </div>
 
-        {/* Row 2 — category nav: centered on desktop, swipeable row on mobile; mega panels span the full header width */}
-        <NavigationMenu
-          dir="rtl"
-          viewport={false}
-          className="static flex w-full max-w-none [&>div]:!static [&>div]:w-full [&>div]:min-w-0"
-        >
-          <NavigationMenuList className="h-12 w-full justify-start gap-0 overflow-x-auto overscroll-x-contain px-2.5 [justify-content:safe_center] [scrollbar-width:none] lg:gap-1.5 lg:px-0 [&::-webkit-scrollbar]:hidden">
-            {navigationItems.map((item) => (
-              <NavigationMenuItem key={item.title} className="static shrink-0">
-                {item.kind === "link" ? (
-                  <NavigationMenuLink asChild>
-                    <Link href={item.href} className={cn(navItemClass, item.deal && "font-extrabold")}>
-                      {item.deal && <BadgePercent className="h-[17px] w-[17px] text-red-700" />}
-                      {item.title}
-                    </Link>
-                  </NavigationMenuLink>
-                ) : (
-                  <>
-                    <NavigationMenuTrigger className={cn(navItemClass, "rounded-none [&>svg]:text-muted-foreground")}>
-                      {item.title}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="!absolute inset-x-0 top-full z-50 max-h-[70vh] overflow-y-auto border-y bg-background shadow-[0_30px_40px_-30px_rgba(16,24,40,.25)] md:!w-full lg:max-h-none lg:overflow-visible">
-                      <MegaPanel item={item} />
-                    </NavigationMenuContent>
-                  </>
-                )}
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-      </header>
+      {/* Row 2 — category nav: centered on desktop, swipeable row on mobile; mega panels span the full header width */}
+      <NavigationMenu
+        dir="rtl"
+        viewport={false}
+        className="static flex w-full max-w-none [&>div]:!static [&>div]:w-full [&>div]:min-w-0"
+      >
+        <NavigationMenuList className="h-12 w-full justify-start gap-0 overflow-x-auto overscroll-x-contain px-2.5 [justify-content:safe_center] [scrollbar-width:none] lg:gap-1.5 lg:px-0 [&::-webkit-scrollbar]:hidden">
+          {navigationItems.map((item) => (
+            <NavigationMenuItem key={item.title} className="static shrink-0">
+              {item.kind === "link" ? (
+                <NavigationMenuLink asChild>
+                  <Link
+                    href={item.href}
+                    className={cn(navItemClass, item.deal && "font-extrabold")}
+                  >
+                    {item.deal && (
+                      <BadgePercent className="h-[17px] w-[17px] text-red-700" />
+                    )}
+                    {item.title}
+                  </Link>
+                </NavigationMenuLink>
+              ) : (
+                <>
+                  <NavigationMenuTrigger
+                    className={cn(
+                      navItemClass,
+                      "rounded-none [&>svg]:text-muted-foreground",
+                    )}
+                  >
+                    {item.title}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="!absolute inset-x-0 top-full z-50 max-h-[70vh] overflow-y-auto border-y bg-background shadow-[0_30px_40px_-30px_rgba(16,24,40,.25)] md:!w-full lg:max-h-none lg:overflow-visible">
+                    <MegaPanel item={item} />
+                  </NavigationMenuContent>
+                </>
+              )}
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </header>
   );
 }
 

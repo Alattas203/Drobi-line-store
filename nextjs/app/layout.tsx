@@ -10,10 +10,15 @@ const almarai = Almarai({
 
 export const metadata: Metadata = {
   title: "دروبي لاين للاتصالات",
-  description: "جوالات أصلية، إكسسوارات، وصيانة معتمدة في جدة — ضمان سنتين وتوصيل بنفس اليوم.",
+  description:
+    "جوالات أصلية، إكسسوارات، وصيانة معتمدة في جدة — ضمان سنتين وتوصيل بنفس اليوم.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ar" dir="rtl">
       <body className={almarai.className}>{children}</body>

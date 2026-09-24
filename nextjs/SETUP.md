@@ -30,15 +30,15 @@ npm i lucide-react @radix-ui/react-slot class-variance-authority @radix-ui/react
 
 ## 4) انسخ الملفات
 
-| الملف | المكان في مشروعك |
-|---|---|
-| `components/ui/header.tsx` | الهيدر نفسه (`Header1`) |
-| `components/ui/button.tsx` | زر shadcn |
+| الملف                               | المكان في مشروعك                      |
+| ----------------------------------- | ------------------------------------- |
+| `components/ui/header.tsx`          | الهيدر نفسه (`Header1`)               |
+| `components/ui/button.tsx`          | زر shadcn                             |
 | `components/ui/navigation-menu.tsx` | قائمة shadcn بعد تعديلها للعربي (RTL) |
-| `components/ui/demo.tsx` | مثال استخدام |
-| `lib/utils.ts` | دالة `cn` (غالباً موجودة بعد init) |
-| `app/layout.tsx` | خط Almarai و `dir="rtl"` |
-| `app/page.tsx` | صفحة تجربة |
+| `components/ui/demo.tsx`            | مثال استخدام                          |
+| `lib/utils.ts`                      | دالة `cn` (غالباً موجودة بعد init)    |
+| `app/layout.tsx`                    | خط Almarai و `dir="rtl"`              |
+| `app/page.tsx`                      | صفحة تجربة                            |
 
 > لو أضفت button أو navigation-menu بالأمر `npx shadcn add`، استبدل ملف navigation-menu بنسختنا لأنها معدّلة للعربي.
 
@@ -46,10 +46,10 @@ npm i lucide-react @radix-ui/react-slot class-variance-authority @radix-ui/react
 
 ```tsx
 <Header1
-  cartCount={2}                 // رقم السلة (يختفي إذا صفر)
-  favCount={1}                  // رقم المفضلة (يختفي إذا صفر)
-  onCartClick={openDrawer}      // يفتح سلة التسوق الجانبية
-  onFavClick={openFavourites}   // بدونه يروح على /favorites
+  cartCount={2} // رقم السلة (يختفي إذا صفر)
+  favCount={1} // رقم المفضلة (يختفي إذا صفر)
+  onCartClick={openDrawer} // يفتح سلة التسوق الجانبية
+  onFavClick={openFavourites} // بدونه يروح على /favorites
   onSearch={(q) => setQuery(q)} // بدونه يروح البحث على /search?q=
 />
 ```
