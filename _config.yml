@@ -1,0 +1,4 @@
+# GitHub Pages: keep the admin mockup and the database schema in the repo, but off the published site.
+exclude:
+  - design
+  - supabase
