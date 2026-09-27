@@ -27,7 +27,6 @@ const FEATURED = [
     key: "ip16p",
     tab: "iPhone 16 Pro",
     art: "iphone",
-    price: 3899,
     colors: [
       ["تيتانيوم صحراوي", "Desert Titanium", "#BFA48F"],
       ["تيتانيوم طبيعي", "Natural Titanium", "#A8A49B"],
@@ -39,7 +38,6 @@ const FEATURED = [
     key: "ip17pm",
     tab: "iPhone 17 Pro Max",
     art: "iphone",
-    price: 5299,
     colors: [
       ["برتقالي كوني", "Cosmic Orange", "#D9772B"],
       ["أزرق داكن", "Deep Blue", "#2F3F5E"],
@@ -50,7 +48,6 @@ const FEATURED = [
     key: "s25u",
     tab: "Galaxy S25 Ultra",
     art: "galaxy",
-    price: 4299,
     colors: [
       ["فضي مزرق", "Titanium Silverblue", "#6E7F99"],
       ["أسود", "Titanium Black", "#2B2D31"],
@@ -188,7 +185,8 @@ let filter = "new",
 function matches(p) {
   if (filter === "new" && !p.isNew) return false;
   if (filter === "fav" && !favs.has(p.id)) return false;
-  if (filter === "sale" && 1 - p.price / p.was < 0.12) return false;
+  if (filter === "sale" && (!p.was || 1 - p.price / p.was < 0.12))
+    return false;
   if (!["all", "new", "sale", "fav"].includes(filter) && p.cat !== filter)
     return false;
   if (!query) return true;
@@ -225,7 +223,25 @@ $("#favBtn").addEventListener("click", () => {
   renderProducts();
   document.getElementById("products").scrollIntoView();
 });
+/* Grey placeholder cards, the same size as a product card, while loading. */
+function showSkeleton() {
+  $("#grid").setAttribute("aria-busy", "true");
+  $("#grid").innerHTML = Array(8)
+    .fill(
+      `<div class="p-card skel" aria-hidden="true"><div class="p-media"></div><div class="p-body"><i></i><i></i><i></i><i></i><i class="skel-btn"></i></div></div>`,
+    )
+    .join("");
+}
+function showLoadError() {
+  $("#grid").removeAttribute("aria-busy");
+  $("#grid").innerHTML =
+    `<div class="empty"><b>ما قدرنا نحمّل المنتجات</b><br>تأكد من اتصالك بالإنترنت وحاول مرة ثانية.<div class="load-err"><button class="btn btn-dark" id="retry">حاول مرة ثانية</button><a class="btn btn-wa" href="https://wa.me/${WA}" target="_blank" rel="noopener"><svg class="i i-sm"><use href="#i-wa"/></svg>راسلنا واتساب</a></div></div>`;
+  $("#retry").addEventListener("click", loadShop);
+}
 function renderProducts() {
+  if (catalogStatus === "loading") return showSkeleton();
+  if (catalogStatus === "failed") return showLoadError();
+  $("#grid").removeAttribute("aria-busy");
   const list = PRODUCTS.filter(matches);
   $("#gridTitle").textContent = query ? `نتائج البحث` : TITLES[filter];
   $("#resultNote").textContent = query
@@ -243,28 +259,38 @@ function renderProducts() {
   }
   $("#grid").innerHTML = list
     .map((p) => {
-      const off = Math.round((1 - p.price / p.was) * 100),
+      const off = p.was ? Math.round((1 - p.price / p.was) * 100) : 0,
+        out = !inStock(p),
         device = ["iphone", "samsung", "other"].includes(p.cat);
+      /* Out of stock: "نفد" takes the discount badge's place. */
+      const deal = out ? "نفد" : off > 0 ? `خصم ${off}%` : "";
       const rib =
         p.cat === "used"
           ? `<span class="ribbon used">مستعمل مضمون</span>`
           : p.isNew
             ? `<span class="ribbon">وصل حديثاً</span>`
-            : `<span class="ribbon">خصم ${off}%</span>`;
+            : deal
+              ? `<span class="ribbon">${deal}</span>`
+              : "";
       const rib2 =
-        p.isNew || p.cat === "used"
-          ? `<span class="ribbon sale num">خصم ${off}%</span>`
+        (p.isNew || p.cat === "used") && deal
+          ? `<span class="ribbon sale num">${deal}</span>`
           : "";
+      const id = esc(p.id);
       return `<article class="p-card">
-      <div class="p-media">${art(p.art, p.color)}${rib}${rib2}<button class="fav" aria-label="أضف للمفضلة" aria-pressed="${favs.has(p.id)}" data-fav="${p.id}"><svg class="i i-sm"><use href="#i-heart"/></svg></button></div>
+      <div class="p-media">${thumb(p)}${rib}${rib2}<button class="fav" aria-label="أضف للمفضلة" aria-pressed="${favs.has(p.id)}" data-fav="${id}"><svg class="i i-sm"><use href="#i-heart"/></svg></button></div>
       <div class="p-body">
-        <span class="p-brand">${p.brand}</span>
-        <h3 class="p-name">${p.name}</h3>
-        <span class="p-spec">${p.spec}</span>
+        <span class="p-brand">${esc(p.brand)}</span>
+        <h3 class="p-name">${esc(p.name)}</h3>
+        <span class="p-spec">${esc(p.spec)}</span>
         ${device ? `<span class="p-warranty"><svg class="i i-sm"><use href="#i-shield"/></svg>ضمان سنتين</span>` : p.cat === "used" ? `<span class="p-warranty" style="color:var(--green)"><svg class="i i-sm"><use href="#i-shield"/></svg>ضمان 6 أشهر</span>` : ""}
-        <div class="p-price num"><b>${sar(p.price)}</b><s>${fmtN(p.was)}</s></div>
+        <div class="p-price num"><b>${sar(p.price)}</b>${p.was > p.price ? `<s>${fmtN(p.was)}</s>` : ""}</div>
         <div class="p-inst num">أو ${sar(p.price / 4)} × 4 <span class="pay-chip pay-tabby">tabby</span><span class="pay-chip pay-tamara">tamara</span></div>
-        <button class="btn btn-primary btn-block add-btn" data-id="${p.id}"><svg class="i i-sm"><use href="#i-bag"/></svg>أضف للسلة</button>
+        ${
+          out
+            ? `<button class="btn btn-primary btn-block add-btn" disabled>نفد المخزون</button>`
+            : `<button class="btn btn-primary btn-block add-btn" data-id="${id}"><svg class="i i-sm"><use href="#i-bag"/></svg>أضف للسلة</button>`
+        }
       </div></article>`;
     })
     .join("");
@@ -288,14 +314,17 @@ $("#grid").addEventListener("click", (e) => {
     return;
   }
   const b = e.target.closest(".add-btn");
-  if (!b) return;
+  if (!b || b.disabled) return;
   const p = PRODUCTS.find((x) => x.id === b.dataset.id);
+  if (!p) return;
   addToCart({
     id: p.id,
+    productId: p.id,
     name: p.name,
     price: p.price,
     art: p.art,
     color: p.color,
+    img: p.img,
   });
   b.classList.add("added");
   b.innerHTML = `<svg class="i i-sm"><use href="#i-check"/></svg>تمت الإضافة`;
@@ -340,9 +369,18 @@ function renderFeatured(anim) {
         `<button class="swatch" style="--c:${x[2]}" aria-pressed="${i === fc}" aria-label="${x[0]}" title="${x[0]}" data-i="${i}"></button>`,
     )
     .join("");
-  $("#fPrice").innerHTML = sar(m.price);
-  $("#fInst").innerHTML =
-    `أو ${sar(m.price / 4)} × 4 بدون فوائد <span class="pay-chip pay-tabby">tabby</span><span class="pay-chip pay-tamara">tamara</span>`;
+  /* Price and stock come from the product itself once the catalogue is in. */
+  const p = PRODUCTS.find((x) => x.id === m.key),
+    add = $("#fAdd");
+  $("#fPrice").innerHTML = p ? sar(p.price) : "";
+  $("#fInst").innerHTML = p
+    ? `أو ${sar(p.price / 4)} × 4 بدون فوائد <span class="pay-chip pay-tabby">tabby</span><span class="pay-chip pay-tamara">tamara</span>`
+    : "";
+  add.disabled = !p || !inStock(p);
+  add.innerHTML =
+    p && !inStock(p)
+      ? "نفد المخزون"
+      : `<svg class="i i-sm"><use href="#i-bag"/></svg>أضف للسلة`;
 }
 $("#fTabs").addEventListener("click", (e) => {
   const b = e.target.closest("button");
@@ -359,45 +397,21 @@ $("#swatches").addEventListener("click", (e) => {
 });
 $("#fAdd").addEventListener("click", () => {
   const m = FEATURED[fm],
-    c = m.colors[fc];
+    c = m.colors[fc],
+    p = PRODUCTS.find((x) => x.id === m.key);
+  if (!p || !inStock(p)) return;
   addToCart({
     id: m.key + "-" + fc,
+    productId: m.key,
     name: `${m.tab} — ${c[1]}`,
-    price: m.price,
+    price: p.price,
     art: m.art,
     color: c[2],
   });
 });
 
-/* ---------- maintenance calculator ---------- */
-const REPAIR = {
-  Apple: {
-    "iPhone 17 Pro Max": [1899, 549, 899],
-    "iPhone 17 Pro": [1699, 499, 849],
-    "iPhone 16 Pro Max": [1499, 449, 749],
-    "iPhone 16 Pro": [1349, 429, 699],
-    "iPhone 16": [999, 379, 549],
-    "iPhone 15 Pro Max": [1249, 399, 649],
-    "iPhone 15": [849, 349, 449],
-    "iPhone 14": [699, 299, 399],
-    "iPhone 13": [549, 249, 349],
-  },
-  Samsung: {
-    "Galaxy S25 Ultra": [1399, 349, 399],
-    "Galaxy S24 Ultra": [1199, 329, 349],
-    "Galaxy S24": [849, 279, 299],
-    "Galaxy Z Flip7": [1599, 379, 429],
-    "Galaxy A56": [549, 199, 199],
-  },
-  Honor: {
-    "Honor 400 Pro": [799, 229, 249],
-    "Honor Magic6 Pro": [999, 249, 279],
-  },
-  Xiaomi: {
-    "Redmi Note 14 Pro+": [499, 179, 169],
-    "Xiaomi 15": [899, 229, 259],
-  },
-};
+/* ---------- maintenance calculator (prices from repair_prices) ---------- */
+const REPAIR = {}; // { brand: { model: [screen, battery, back] } }
 const ISSUE = {
   screen: ["الشاشة", 0, "45 دقيقة"],
   battery: ["البطارية", 1, "30 دقيقة"],
@@ -406,17 +420,25 @@ const ISSUE = {
 let issue = "screen";
 const mB = $("#mBrand"),
   mM = $("#mModel");
-mB.innerHTML = Object.keys(REPAIR)
-  .map((b) => `<option>${b}</option>`)
-  .join("");
+function buildRepair(rows) {
+  rows.forEach((r) => {
+    (REPAIR[r.brand] ||= {})[r.model] = [+r.screen, +r.battery, +r.back];
+  });
+  mB.innerHTML = Object.keys(REPAIR)
+    .map((b) => `<option>${esc(b)}</option>`)
+    .join("");
+  fillModels();
+  calcRepair();
+}
 const fillModels = () => {
-  mM.innerHTML = Object.keys(REPAIR[mB.value])
-    .map((m) => `<option>${m}</option>`)
+  mM.innerHTML = Object.keys(REPAIR[mB.value] || {})
+    .map((m) => `<option>${esc(m)}</option>`)
     .join("");
 };
 function calcRepair() {
   const [label, idx, time] = ISSUE[issue],
-    price = REPAIR[mB.value][mM.value][idx];
+    price = REPAIR[mB.value]?.[mM.value]?.[idx];
+  if (price == null) return;
   $("#mPrice").innerHTML = sar(price);
   $("#mTime").textContent = `مدة الإصلاح: ${time} · ضمان 6 أشهر`;
   const msg = `السلام عليكم، أبغى أحجز موعد صيانة في فرع الشرفية\n\nالجهاز: ${mM.value}\nالعطل: ${label}\nالسعر التقديري: ${price} ريال\n\nمتى أقرب موعد؟`;
@@ -434,40 +456,34 @@ $("#mIssue").addEventListener("click", (e) => {
   $$("#mIssue button").forEach((x) => x.setAttribute("aria-pressed", x === b));
   calcRepair();
 });
-fillModels();
-calcRepair();
 
-/* ---------- trade-in ---------- */
-const OLD = [
-  ["iPhone 16 Pro Max", 3100],
-  ["iPhone 16 Pro", 2700],
-  ["iPhone 15 Pro Max", 2450],
-  ["iPhone 15 Pro", 2050],
-  ["iPhone 15", 1650],
-  ["iPhone 14 Pro Max", 1800],
-  ["iPhone 14", 1150],
-  ["iPhone 13", 900],
-  ["Galaxy S24 Ultra", 2100],
-  ["Galaxy S23 Ultra", 1500],
-  ["Galaxy S23", 1000],
-  ["Galaxy Z Flip6", 1350],
-];
-const NEW = PRODUCTS.filter((p) =>
-  ["iphone", "samsung", "other"].includes(p.cat),
-);
-$("#tOld").innerHTML = OLD.map(
-  (o, i) =>
-    `<option value="${i}" ${i === 3 ? "selected" : ""}>${o[0]}</option>`,
-).join("");
-$("#tNew").innerHTML = NEW.map(
-  (p) => `<option value="${p.id}">${p.name} — ${fmtN(p.price)} ريال</option>`,
-).join("");
+/* ---------- trade-in (old values from trade_values, new devices from PRODUCTS) ---------- */
+let OLD = [], // [[model, value]]
+  NEW = [];
+function buildTradeOld(rows) {
+  OLD = rows.map((r) => [r.model, +r.value]);
+  $("#tOld").innerHTML = OLD.map(
+    (o, i) =>
+      `<option value="${i}" ${i === 3 ? "selected" : ""}>${esc(o[0])}</option>`,
+  ).join("");
+  calcTrade();
+}
+function buildTradeNew() {
+  NEW = PRODUCTS.filter((p) => ["iphone", "samsung", "other"].includes(p.cat));
+  const was = $("#tNew").value;
+  $("#tNew").innerHTML = NEW.map(
+    (p) =>
+      `<option value="${esc(p.id)}" ${p.id === was ? "selected" : ""}>${esc(p.name)} — ${fmtN(p.price)} ريال</option>`,
+  ).join("");
+  calcTrade();
+}
 let cond = 1;
 function calcTrade() {
   const o = OLD[+$("#tOld").value],
-    st = +$("#tStorage").value,
-    val = Math.round((o[1] * (1 + st * 0.08) * cond) / 10) * 10;
-  const np = NEW.find((p) => p.id === $("#tNew").value),
+    np = NEW.find((p) => p.id === $("#tNew").value);
+  if (!o || !np) return;
+  const st = +$("#tStorage").value,
+    val = Math.round((o[1] * (1 + st * 0.08) * cond) / 10) * 10,
     diff = Math.max(0, np.price - val);
   const cl = $("#tCond [aria-pressed=true]").textContent.trim();
   $("#tNewP").innerHTML = sar(np.price);
@@ -489,7 +505,35 @@ $("#tCond").addEventListener("click", (e) => {
   $$("#tCond button").forEach((x) => x.setAttribute("aria-pressed", x === b));
   calcTrade();
 });
-calcTrade();
+
+/* ---------- loading: catalogue + calculator prices ---------- */
+let pricesLoaded = false;
+async function loadPrices() {
+  try {
+    const [rp, tv] = await Promise.all([
+      sb.from("repair_prices").select("brand,model,screen,battery,back").order("sort"),
+      sb.from("trade_values").select("model,value").order("sort"),
+    ]);
+    if (rp.error) throw rp.error;
+    if (tv.error) throw tv.error;
+    buildRepair(rp.data);
+    buildTradeOld(tv.data);
+    pricesLoaded = true;
+  } catch (e) {
+    console.error("loadPrices", e);
+  }
+}
+catalogView.loading = renderProducts;
+catalogView.failed = renderProducts;
+catalogView.ready = () => {
+  renderProducts();
+  renderFeatured(false);
+  buildTradeNew();
+};
+function loadShop() {
+  loadCatalog();
+  if (!pricesLoaded) loadPrices();
+}
 
 /* ---------- branch status (Jeddah time) ---------- */
 const DAYS = [
@@ -640,5 +684,5 @@ if (document.fonts) document.fonts.ready.then(drawMap);
 
 /* ---------- init ---------- */
 renderFilters();
-renderProducts();
 renderFeatured(false);
+loadShop();

@@ -177,6 +177,11 @@ svg.i-sm {
 .btn-block {
   width: 100%;
 }
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}
 .circle {
   width: 42px;
   height: 42px;
@@ -889,6 +894,11 @@ footer .logo-mark {
   height: 56px;
   width: auto;
   max-width: 64px;
+}
+.ci-img > img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 .ci-name {
   font-weight: 700;

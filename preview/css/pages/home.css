@@ -160,15 +160,66 @@ section.block {
   display: grid;
   place-items: center;
 }
-.p-media > svg {
+.p-media > svg,
+.p-media > img {
   height: 80%;
   width: auto;
   max-width: 92%;
   filter: drop-shadow(0 14px 14px rgba(15, 23, 42, 0.16));
   transition: transform 0.35s;
 }
-.p-card:hover .p-media > svg {
+.p-media > img {
+  width: 80%;
+  object-fit: contain;
+}
+.p-card:hover .p-media > svg,
+.p-card:hover .p-media > img {
   transform: scale(1.04);
+}
+/* Loading placeholders — same box as a product card */
+.p-card.skel .p-media {
+  background: var(--card);
+}
+.p-card.skel i {
+  display: block;
+  height: 12px;
+  width: 40%;
+  border-radius: 4px;
+  background: var(--card);
+}
+.p-card.skel i:nth-child(2) {
+  width: 85%;
+  height: 16px;
+}
+.p-card.skel i:nth-child(3) {
+  width: 65%;
+}
+.p-card.skel i:nth-child(4) {
+  width: 50%;
+  height: 18px;
+  margin-top: auto;
+}
+.p-card.skel .skel-btn {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+.p-card.skel .p-media,
+.p-card.skel i {
+  animation: skel 1.2s ease-in-out infinite alternate;
+}
+@keyframes skel {
+  to {
+    opacity: 0.55;
+  }
+}
+.load-err {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
 }
 .ribbon {
   position: absolute;

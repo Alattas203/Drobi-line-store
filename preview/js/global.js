@@ -9,6 +9,13 @@ const $$ = (s) => [...document.querySelectorAll(s)];
 const R = `<svg class="riyal" aria-label="ريال"><use href="#i-riyal"/></svg>`;
 const fmtN = (n) => Math.round(n).toLocaleString("en-US");
 const sar = (n) => `<span class="price">${fmtN(n)} ${R}</span>`;
+/* Escape text from the database or storage before it goes into innerHTML. */
+const esc = (s) =>
+  String(s ?? "").replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+  );
 
 /* ---------- product artwork (placeholder renders until real photos) ---------- */
 function shade(hex, a) {
@@ -63,189 +70,54 @@ function art(style, color) {
   return "";
 }
 
-/* ---------- catalogue (header promos, cart and pages read it) ---------- */
-const PRODUCTS = [
-  {
-    id: "ip17pm",
-    cat: "iphone",
-    brand: "Apple",
-    name: "iPhone 17 Pro Max",
-    spec: "256GB · Cosmic Orange",
-    price: 5299,
-    was: 5799,
-    art: "iphone",
-    color: "#D9772B",
-    isNew: true,
-  },
-  {
-    id: "s25u",
-    cat: "samsung",
-    brand: "Samsung",
-    name: "Galaxy S25 Ultra",
-    spec: "256GB · Titanium Silverblue",
-    price: 4299,
-    was: 5199,
-    art: "galaxy",
-    color: "#6E7F99",
-    isNew: true,
-  },
-  {
-    id: "honor400",
-    cat: "other",
-    brand: "Honor",
-    name: "Honor 400 Pro",
-    spec: "512GB · Midnight Black",
-    price: 2199,
-    was: 2599,
-    art: "galaxy",
-    color: "#2A2D34",
-    isNew: true,
-  },
-  {
-    id: "zflip7",
-    cat: "samsung",
-    brand: "Samsung",
-    name: "Galaxy Z Flip7",
-    spec: "256GB · Blue Shadow",
-    price: 3799,
-    was: 4299,
-    art: "flip",
-    color: "#35507F",
-    isNew: true,
-  },
-  {
-    id: "ip17p",
-    cat: "iphone",
-    brand: "Apple",
-    name: "iPhone 17 Pro",
-    spec: "256GB · Deep Blue",
-    price: 4799,
-    was: 5199,
-    art: "iphone",
-    color: "#2F3F5E",
-  },
-  {
-    id: "ip16p",
-    cat: "iphone",
-    brand: "Apple",
-    name: "iPhone 16 Pro",
-    spec: "128GB · Desert Titanium",
-    price: 3899,
-    was: 4499,
-    art: "iphone",
-    color: "#BFA48F",
-  },
-  {
-    id: "ip16",
-    cat: "iphone",
-    brand: "Apple",
-    name: "iPhone 16",
-    spec: "128GB · Ultramarine",
-    price: 2999,
-    was: 3399,
-    art: "iphone",
-    color: "#5B6FD8",
-  },
-  {
-    id: "a56",
-    cat: "samsung",
-    brand: "Samsung",
-    name: "Galaxy A56 5G",
-    spec: "256GB · Graphite",
-    price: 1499,
-    was: 1699,
-    art: "galaxy",
-    color: "#3A3D45",
-  },
-  {
-    id: "xi15",
-    cat: "other",
-    brand: "Xiaomi",
-    name: "Redmi Note 14 Pro+",
-    spec: "512GB · Aurora Purple",
-    price: 1399,
-    was: 1599,
-    art: "galaxy",
-    color: "#6A4FA0",
-  },
-  {
-    id: "u15pm",
-    cat: "used",
-    brand: "Apple",
-    name: "iPhone 15 Pro Max — مستعمل",
-    spec: "256GB · بطارية 91%",
-    price: 2799,
-    was: 3399,
-    art: "iphone",
-    color: "#8C8A85",
-  },
-  {
-    id: "us24u",
-    cat: "used",
-    brand: "Samsung",
-    name: "Galaxy S24 Ultra — مستعمل",
-    spec: "256GB · حالة ممتازة",
-    price: 2399,
-    was: 2899,
-    art: "galaxy",
-    color: "#4B4E55",
-  },
-  {
-    id: "anker65",
-    cat: "acc",
-    brand: "Anker",
-    name: "شاحن Anker Prime GaN 65W",
-    spec: "3 منافذ",
-    price: 189,
-    was: 249,
-    art: "charger",
-    color: "#E8EAF0",
-  },
-  {
-    id: "ankbank",
-    cat: "acc",
-    brand: "Anker",
-    name: "باور بانك Anker 20000mAh",
-    spec: "شحن سريع 30W",
-    price: 159,
-    was: 199,
-    art: "bank",
-    color: "#2C3140",
-  },
-  {
-    id: "glbuds",
-    cat: "acc",
-    brand: "Green Lion",
-    name: "سماعات Green Lion لاسلكية",
-    spec: "عزل ضوضاء ANC",
-    price: 129,
-    was: 179,
-    art: "buds",
-    color: "#F2F3F7",
-  },
-  {
-    id: "magcase",
-    cat: "acc",
-    brand: "MagSafe",
-    name: "كفر MagSafe شفاف — iPhone 17 Pro",
-    spec: "مقاوم للاصفرار",
-    price: 89,
-    was: 129,
-    art: "case",
-    color: "#9FB3D9",
-  },
-  {
-    id: "glass9h",
-    cat: "acc",
-    brand: "حماية",
-    name: "حماية شاشة زجاج 9H",
-    spec: "تركيب مجاني بالفرع",
-    price: 49,
-    was: 79,
-    art: "glass",
-    color: "#7FA6FF",
-  },
-];
+/* ---------- catalogue (loaded from Supabase; header promos, cart and pages read it) ---------- */
+const PRODUCTS = [];
+let catalogStatus = "loading"; // loading | ready | failed
+/* The page script fills these in to redraw whatever depends on PRODUCTS. */
+const catalogView = { loading() {}, ready() {}, failed() {} };
+const HEX = /^#[0-9a-f]{6}$/i;
+const toProduct = (r) => ({
+  id: r.id,
+  cat: r.cat,
+  brand: r.brand || "",
+  name: r.name,
+  spec: r.spec || "",
+  price: +r.price,
+  was: r.was == null ? null : +r.was,
+  stock: r.stock,
+  art: r.art,
+  color: HEX.test(r.color) ? r.color : "#8C8A85",
+  img: r.image_url || "",
+  isNew: !!r.is_new,
+});
+const inStock = (p) => p.stock == null || p.stock > 0;
+/* Product picture: the real photo when there is one, else the drawn artwork. */
+const thumb = (p) =>
+  p.img
+    ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`
+    : art(p.art, p.color);
+async function loadCatalog() {
+  catalogStatus = "loading";
+  catalogView.loading();
+  try {
+    const { data, error } = await sb
+      .from("products")
+      .select("id,cat,brand,name,spec,price,was,stock,art,color,image_url,is_new")
+      .eq("visible", true)
+      .order("sort");
+    if (error) throw error;
+    PRODUCTS.splice(0, PRODUCTS.length, ...data.map(toProduct));
+  } catch (e) {
+    console.error("loadCatalog", e);
+    catalogStatus = "failed";
+    catalogView.failed();
+    return;
+  }
+  catalogStatus = "ready";
+  syncCart();
+  syncAddButtons();
+  catalogView.ready();
+}
 
 /* ---------- cart ---------- */
 let cart = [];
@@ -255,6 +127,10 @@ try {
 } catch (e) {
   cart = [];
 }
+/* Older saved carts have no productId; colour-picker items look like "ip16p-2". */
+cart.forEach((c) => {
+  c.productId = c.productId || String(c.id).split("-")[0];
+});
 const save = () => {
   try {
     localStorage.setItem("drobi-cart", JSON.stringify(cart));
@@ -270,6 +146,17 @@ function addToCart(item) {
   const c = $("#cartCount");
   c.classList.add("bump");
   setTimeout(() => c.classList.remove("bump"), 250);
+}
+/* Keep saved cart prices and photos in step with the loaded catalogue. */
+function syncCart() {
+  cart.forEach((c) => {
+    const p = PRODUCTS.find((x) => x.id === c.productId);
+    if (!p) return;
+    c.price = p.price;
+    if (c.id === p.id) c.img = p.img;
+  });
+  save();
+  renderCart();
 }
 
 /* ---------- header ---------- */
@@ -364,8 +251,8 @@ function renderCart() {
       (
         c,
         i,
-      ) => `<div class="ci"><div class="ci-img">${art(c.art, c.color)}</div>
-    <div><div class="ci-name">${c.name}</div><div class="ci-price num">${sar(c.price)}</div>
+      ) => `<div class="ci"><div class="ci-img">${thumb(c)}</div>
+    <div><div class="ci-name">${esc(c.name)}</div><div class="ci-price num">${sar(c.price)}</div>
     <div class="qty"><button data-a="inc" data-i="${i}" aria-label="زيادة"><svg class="i i-sm"><use href="#i-plus"/></svg></button><span class="num">${c.qty}</span><button data-a="dec" data-i="${i}" aria-label="إنقاص"><svg class="i i-sm"><use href="#i-minus"/></svg></button></div></div>
     <button class="ci-rm" data-a="rm" data-i="${i}" aria-label="حذف"><svg class="i"><use href="#i-trash"/></svg></button></div>`,
     )
@@ -378,7 +265,6 @@ function renderCart() {
     t.g >= FREE
       ? `<b style="color:var(--green)">التوصيل مجاني لطلبك</b><div class="track"><div class="fill" style="width:100%;background:var(--green)"></div></div>`
       : `باقي <b class="num">${sar(FREE - t.g)}</b> على التوصيل المجاني<div class="track"><div class="fill" style="width:${(t.g / FREE) * 100}%"></div></div>`;
-  updateCheckout();
 }
 $("#dBody").addEventListener("click", (e) => {
   const b = e.target.closest("button[data-a]");
@@ -395,24 +281,53 @@ function orderMessage() {
   const t = totals();
   return `طلب جديد — دروبي لاين للاتصالات\n\n${cart.map((c, i) => `${i + 1}. ${c.name} × ${c.qty} = ${Math.round(c.price * c.qty)} ريال`).join("\n")}\n\nالمجموع قبل الضريبة: ${t.sub.toFixed(2)} ريال\nالضريبة 15%: ${t.vat.toFixed(2)} ريال\nالتوصيل: ${t.del ? t.del + " ريال" : "مجاني"}\n*الإجمالي: ${t.total.toFixed(2)} ريال*\n\nالاسم: ${$("#cName").value.trim()}\nالحي: ${$("#cArea").value}\nالعنوان: ${$("#cAddr").value.trim()}\nالدفع: ${$("#cPay").value}`;
 }
-function updateCheckout() {
-  $("#checkout").href =
-    `https://wa.me/${WA}?text=${encodeURIComponent(orderMessage())}`;
-}
 ["#cName", "#cAddr", "#cArea", "#cPay"].forEach((s) =>
   $(s).addEventListener("input", () => {
     $("#cErr").hidden = true;
-    updateCheckout();
   }),
 );
-$("#checkout").addEventListener("click", (e) => {
-  if (!$("#cName").value.trim() || !$("#cAddr").value.trim()) {
-    e.preventDefault();
+/* Save the order in Supabase (prices are worked out on the server), then hand
+   the numbered order over to WhatsApp. */
+$("#checkout").addEventListener("click", async () => {
+  const name = $("#cName").value.trim(),
+    addr = $("#cAddr").value.trim();
+  if (!name || !addr) {
     $("#cErr").hidden = false;
-    ($("#cName").value.trim() ? $("#cAddr") : $("#cName")).focus();
+    (name ? $("#cAddr") : $("#cName")).focus();
     return;
   }
-  updateCheckout();
+  const b = $("#checkout"),
+    label = b.innerHTML;
+  b.disabled = true;
+  b.textContent = "جاري إرسال الطلب…";
+  let orderNo, error;
+  try {
+    ({ data: orderNo, error } = await sb.rpc("place_order", {
+      p_items: cart.map((c) => ({ id: c.productId, qty: c.qty, label: c.name })),
+      p_name: name,
+      p_area: $("#cArea").value,
+      p_address: addr,
+      p_pay: $("#cPay").value,
+    }));
+  } catch (e) {
+    error = e;
+  }
+  if (error || orderNo == null) {
+    console.error("place_order", error);
+    toast("ما قدرنا نرسل الطلب، جرّب مرة ثانية أو راسلنا واتساب");
+    b.disabled = false;
+    b.innerHTML = label;
+    if (String(error?.message).includes("منتج غير متوفر")) loadCatalog();
+    return;
+  }
+  const msg = `طلب رقم #${orderNo}\n\n${orderMessage()}`;
+  cart = [];
+  save();
+  renderCart();
+  closeCart();
+  b.disabled = false;
+  b.innerHTML = label;
+  window.location.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
 });
 function openCart() {
   $("#drawer").classList.add("open");
@@ -442,19 +357,31 @@ $("#yr").textContent = new Date().getFullYear();
 $$("[data-art]").forEach((el) => {
   el.innerHTML = art(el.dataset.art, el.dataset.color);
 });
-$$("[data-add]").forEach((b) =>
+/* Promo buttons stay disabled until their product has loaded and is in stock. */
+function syncAddButtons() {
+  $$("[data-add]").forEach((b) => {
+    const p = PRODUCTS.find((x) => x.id === b.dataset.add);
+    b.disabled = !p || !inStock(p);
+    if (p && !inStock(p)) b.textContent = "نفد المخزون";
+  });
+}
+$$("[data-add]").forEach((b) => {
+  b.disabled = true;
   b.addEventListener("click", () => {
     const p = PRODUCTS.find((x) => x.id === b.dataset.add);
+    if (!p || !inStock(p)) return;
     addToCart({
       id: p.id,
+      productId: p.id,
       name: p.name,
       price: p.price,
       art: p.art,
       color: p.color,
+      img: p.img,
     });
     $$("[data-menu]").forEach((i) => i.classList.remove("open"));
-  }),
-);
+  });
+});
 
 /* ---------- init ---------- */
 renderCart();

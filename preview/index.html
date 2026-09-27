@@ -1006,20 +1006,17 @@
         <span class="err" id="cErr" hidden
           >اكتب اسمك وعنوانك عشان نوصّل لك الطلب.</span
         >
-        <a
-          class="btn btn-wa btn-lg btn-block"
-          id="checkout"
-          href="#"
-          target="_blank"
-          rel="noopener"
-          ><svg class="i"><use href="#i-wa" /></svg>إرسال الطلب عبر الواتساب</a
-        >
+        <button type="button" class="btn btn-wa btn-lg btn-block" id="checkout">
+          <svg class="i"><use href="#i-wa" /></svg>إرسال الطلب عبر الواتساب
+        </button>
       </div>
     </aside>
 
     <div class="toast" id="toast" role="status">
       <svg class="i"><use href="#i-check" /></svg><span id="toastTxt"></span>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
     <script src="js/global.js"></script>
     <script src="js/pages/home.js"></script>
   </body>
