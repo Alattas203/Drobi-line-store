@@ -412,6 +412,17 @@ select:focus,
 .badge-dot.red {
   background: var(--red-2);
 }
+/* Signed-in admin: small green dot on the account icon */
+.acc-dot {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2px solid var(--white);
+}
 
 /* category nav */
 .nav-row {

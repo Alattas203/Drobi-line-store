@@ -245,9 +245,15 @@
             <svg class="i"><use href="#i-search" /></svg>
           </label>
           <div class="h-icons">
-            <button class="icon-btn acc-btn" aria-label="حسابي" title="حسابي">
-              <svg class="i"><use href="#i-user" /></svg>
-            </button>
+            <a
+              class="icon-btn acc-btn"
+              href="admin/"
+              aria-label="دخول المشرفين"
+              title="دخول المشرفين"
+            >
+              <svg class="i"><use href="#i-user" /></svg
+              ><span class="acc-dot" id="accDot" hidden></span>
+            </a>
             <button
               class="icon-btn"
               id="favBtn"
@@ -329,7 +335,7 @@
                         >5,299 <svg class="riyal"><use href="#i-riyal" /></svg
                       ></span>
                     </div>
-                    <div class="pi num">أو 1,325 × 4 مع تابي وتمارا</div>
+                    <div class="pi num" data-inst>أو 1,325 × 4 مع تابي وتمارا</div>
                     <button class="btn btn-dark btn-sm" data-add="ip17pm">
                       أضف للسلة
                     </button>
@@ -374,7 +380,7 @@
                     data-color="#E8EAF0"
                   ></div>
                   <div>
-                    <span class="tag">خصم 24%</span
+                    <span class="tag" data-off>خصم 24%</span
                     ><b>شاحن Anker Prime GaN 65W</b>
                     <div class="pp num">
                       <span class="price"
@@ -1017,6 +1023,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="js/lib/helpers.js"></script>
     <script src="js/global.js"></script>
     <script src="js/pages/home.js"></script>
   </body>
